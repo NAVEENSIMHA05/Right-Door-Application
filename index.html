@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ℝ𝕀𝔾ℍ𝕋 𝔻𝕆𝕆ℝ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-image">
+  <div class="overlay"></div>
+  <div class="container">
+    <h1>𝕎𝕖𝕝𝕔𝕠𝕞𝕖, 𝔸𝕤𝕡𝕚𝕣𝕚𝕟𝕘 𝔽𝕚𝕝𝕞𝕞𝕒𝕜𝕖𝕣</h1>
+    <form onsubmit="return goToCraftsPage()">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required />
+
+      <label for="phone">Contact No:</label>
+      <input type="tel" id="phone" required />
+
+      <button type="submit" class="submit-btn">Next: Choose Your Craft</button>
+    </form>
+  </div>
+
+ <script>
+ function goToCraftsPage() {
+  const name = document.getElementById('name').value;
+     const email = document.getElementById('email').value;
+     const phone = document.getElementById('phone').value;
+
+    // Save data to browser's local storage
+    localStorage.setItem('applicantName', name);
+    localStorage.setItem('applicantEmail', email);
+    localStorage.setItem('applicantPhone', phone);
+
+    // Redirect to the next page
+    window.location.href = "crafts.html";
+    return false;
+}
+</script>
+</body>
+</html>

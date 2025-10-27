@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Upload Resume</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-image">
+  <div class="overlay"></div>
+  <div class="container">
+    <h1>𝔸𝕡𝕡𝕝𝕪 𝕗𝕠𝕣: <span id="selectedCraft"></span></h1>
+    <form id="applicationForm" onsubmit= "return showSuccessModal()"              enctype="multipart/form-data">
+      <label for="experience">Experience & Portfolio:</label>
+      <textarea id="experience" rows="6" required></textarea>
+
+      <label for="resume">Upload Resume (PDF only):</label>
+      <input type="file" id="resume" name="resume" accept=".pdf" required />
+
+      <button type="submit" class="submit-btn">Submit Application</button>
+    </form>
+  </div>
+
+  <!-- Success Modal Popup -->
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <h2>🎉 Application Submitted!</h2>
+      <p>Your application has been submitted successfully.</p>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+<script>
+  // Retrieve the selected craft from localStorage
+  const selectedCraft = localStorage.getItem('selectedCraft') || 'Unknown';
+  document.getElementById("selectedCraft").textContent = selectedCraft;
+
+  document.getElementById('applicationForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    // Retrieve data from localStorage and add it to the FormData object
+    formData.append('name', localStorage.getItem('applicantName'));
+    formData.append('email', localStorage.getItem('applicantEmail'));
+    formData.append('phone', localStorage.getItem('applicantPhone'));
+    formData.append('selectedCraft', selectedCraft);
+
+    try {
+      const response = await fetch('/api/submit-application', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        // Show the success modal
+        document.getElementById("successModal").style.display = "flex";
+        // Clear localStorage after successful submission
+        localStorage.clear();
+      } else {
+        alert('Application failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again.');
+    }
+  });
+
+  function closeModal() {
+    document.getElementById("successModal").style.display = "none";
+  }
+</script>
+ </body>
+</html>
